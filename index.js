@@ -17,6 +17,7 @@ let sayEvents = async function(attributes) {
    const year = today.getDate();
    return new Promise(function(resolve) {
       let speakHall = null;
+      let speechOutput = null;
       request('https://www.bmcc.cuny.edu/events/', (error, response, html) => {
 
          if (!error && response.statusCode == 200) {
@@ -37,6 +38,7 @@ let sayEvents = async function(attributes) {
                const item = $(el).text().replace(/\s\s+/g, '');
                eventsAddress.push(item);
             });
+
             if (eventsAddress[attributes] == "199 Chambers Street") {
                speakHall = "main building ";
             } else if (eventsAddress[attributes] == "245 Greenwich Street") {
@@ -44,101 +46,96 @@ let sayEvents = async function(attributes) {
             } else if (eventsAddress[attributes] == "70 Murray Street") {
                speakHall = "murray building ";
             }
-            resolve("There is an event, " + eventsNames[attributes] + " at " + eventsDates[attributes] + ', ' + " in the " + speakHall + "Located at " + eventsAddress[attributes]);
+
+            if(attributes == 0){
+               speechOutput = "There is an event, " + eventsNames[attributes] + " at " + eventsDates[attributes] + ', ' + " in the " + speakHall + "Located at " + eventsAddress[attributes] + ", Would you like to know anything else?";
+            }else{
+               speechOutput = "The next event is " + eventsNames[attributes] + " at " + eventsDates[attributes] + ', ' + " in the " + speakHall + "Located at " + eventsAddress[attributes] + ", Would you like to know anything else?";
+            }
+            resolve(speechOutput);
          }
       });
    });
 };
 
-const office_names = ['ASAP',
-   'bursar',
-   'osa',
-   'admissions',
-   'professor Azhar'
-];
 const offices = [
-      ['Academic Advisement and Transfer Center','S-108'],
-      ['Academic Affairs','S-715'],
-      ['Academic Literacy and Linguistics','N-499'],
-      ['Accounting','F-530'],
-      ['Accounts Payable','S-732'],
-      ['Admin and Planning Campus Facilities Office','M-1106A'],
-      ['Administration and Planning','S-707'],
-      ['Admissions','S-310'],
-      ['Allied Health Sciences','N-799'],
-      ['ASAP','M-1412'],
-      ['Athletics and Recreation','N-255'],
-      ['BMCC Association, Inc.','S-230'],
-      ['BMCC Express','G-102'],
-      ['BMCC Learning Academy','M-1413'],
-      ['Bookstore - Barnes and Noble','S-225'],
-      ['Budget  Fiscal Office','S-711'],
-      ['Buildings and Grounds','N-194'],
-      ['Bursar','S-330'],
-      ['Business Management','F-730'],
-      ['Cafeteria - MBJ Food Services','S-147'],
-      ['Career Development','S-342'],
-      ['Center for Ethnic Studies','S-637'],
-      ['College Discovery','S-335'],
-      ['Computer Information Systems','F-0930'],
-      ['Counseling Center','S-343'],
-      ['CUNY EDGE','M-1216B'],
-      ['CUNY Start ','M-1016B'],
-      ['Development','S-707A'],
-      ['E-Learning','S-510A'],
-      ['Early Childhood Center','N-3,75'],
-      ['English','N-751'],
-      ['EveningWeekend','S-715A'],
-      ['Financial Aid','N-365'],
-      ['Health Education','N-798'],
+      ['Academic Advisement and Transfer Center','S108'],
+      ['Academic Affairs','S715'],
+      ['Academic Literacy and Linguistics','N499'],
+      ['Accounting','F530'],
+      ['Accounts Payable','S732'],
+      ['Admin and Planning Campus Facilities Office','M1106A'],
+      ['Administration and Planning','S707'],
+      ['Admissions','S310'],
+      ['Allied Health Sciences','N799'],
+      ['ASAP','M1412'],
+      ['Athletics and Recreation','N255'],
+      ['BMCC Association, Inc.','S230'],
+      ['BMCC Express','G102'],
+      ['BMCC Learning Academy','M1413'],
+      ['Bookstore   Barnes and Noble','S225'],
+      ['Budget  Fiscal Office','S711'],
+      ['Buildings and Grounds','N194'],
+      ['Bursar','S330'],
+      ['Business Management','F730'],
+      ['Cafeteria   MBJ Food Services','S147'],
+      ['Career Development','S342'],
+      ['Center for Ethnic Studies','S637'],
+      ['College Discovery','S335'],
+      ['Computer Information Systems','F0930'],
+      ['Counseling Center','S343'],
+      ['CUNY EDGE','M1216B'],
+      ['CUNY Start ','M1016B'],
+      ['Development','S707A'],
+      ['E Learning','S510A'],
+      ['Early Childhood Center','N375'],
+      ['English','N751'],
+      ['EveningWeekend','S715A'],
+      ['Financial Aid','N365'],
+      ['Health Education','N798'],
       ['Health Services','N380'],
-      ['Human Resources','S-717'],
-      ['Information Resources and Technology','S-140'],
-      ['Institutional Effectiveness and Analytics','S-735'],
-      ['Instructional Technology','S-604'],
-      ['International Students','S-115N'],
-      ['Internships and Experiential Learning','S-746A'],
-      ['Learning Resource Center','S-510'],
-      ['Library','S-410'],
-      ['Mail and Messenger Services','N-186'],
-      ['Math Start','M-1018'],
-      ['Mathematics','N-599'],
-      ['Media Arts and Technology','S-622'],
-      ['Media Center','S-533'],
-      ['Modern Languages','S-610'],
-      ['Music and Art','F-1130'],
-      ['Nursing','S-730'],
-      ['Off-Site','S-715A'],
-      ['Office of Accessibility','N-360'],
-      ['Office of Sponsored Programs','S-736'],
-      ['Office of Student Activities','S-230'],
-      ['Presidents Office','S-701'],
-      ['Public Affairs','F-1230'],
-      ['Public Safety','S-215'],
-      ['Purchasing','S-712'],
-      ['Receiving and Stores','N-185'],
-      ['Registrar','S-315'],
-      ['Reprographics','S-128'],
-      ['Science','N-699'],
-      ['Single Stop','S-230'],
-      ['Social Sciences, Human Services and Criminal Justice','N-651'],
-      ['Speech, Communications and Theatre Arts','S-628'],
-      ['Student Affairs','S-350'],
-      ['Study Abroad','S-746A'],
-      ['Teacher Education','S-616'],
-      ['Testing Office','S-103'],
-      ['Tribeca Performing Arts Center','S-110C'],
-      ['Veterans Resource Center','S-1115M'],
-      ['Womens Resource Center','S-340'],
-      ['Writing Center','S-500W']
+      ['Human Resources','S717'],
+      ['Information Resources and Technology','S140'],
+      ['Institutional Effectiveness and Analytics','S735'],
+      ['Instructional Technology','S604'],
+      ['International Students','S115N'],
+      ['Internships and Experiential Learning','S746A'],
+      ['Learning Resource Center','S510'],
+      ['Library','S410'],
+      ['Mail and Messenger Services','N186'],
+      ['Math Start','M1018'],
+      ['Mathematics','N599'],
+      ['Media Arts and Technology','S622'],
+      ['Media Center','S533'],
+      ['Modern Languages','S610'],
+      ['Music and Art','F1130'],
+      ['Nursing','S730'],
+      ['Off Site','S 715A'],
+      ['Office of Accessibility','N360'],
+      ['Office of Sponsored Programs','S736'],
+      ['Office of Student Activities','S230'],
+      ['Presidents Office','S701'],
+      ['Public Affairs','F1230'],
+      ['Public Safety','S215'],
+      ['Purchasing','S712'],
+      ['Receiving and Stores','N185'],
+      ['Registrar','S315'],
+      ['Reprographics','S128'],
+      ['Science','N699'],
+      ['Single Stop','S230'],
+      ['Social Sciences, Human Services and Criminal Justice','N651'],
+      ['Speech, Communications and Theatre Arts','S 628'],
+      ['Student Affairs','S350'],
+      ['Study Abroad','S746A'],
+      ['Teacher Education','S616'],
+      ['Testing Office','S103'],
+      ['Tribeca Performing Arts Center','S110C'],
+      ['Veterans Resource Center','S1115M'],
+      ['Womens Resource Center','S340'],
+      ['Writing Center','S500W']
 ];
-console.log(offices[0][0]);
-const office_location = ['Murray Building. in room . m. one four zero zero',
-   'Main Building. in room . s. three three zero',
-   'Main Building. in room . s. two three zero',
-   'Main Building. in room . s. three one zero',
-   'FitterMan Building. in room. f. zero nine three zero. l'
-];
+
+//console.log(offices[0][0]);
 
 const LaunchRequestHandler = {
    canHandle(handlerInput) {
@@ -208,16 +205,18 @@ const OfficeIntentHandler = {
    },
    handle(handlerInput) {
 
-      var office_value = handlerInput.requestEnvelope.request.intent.slots.offices.value;
-      var speechText = 'I do not have that office in my records';
-      if (!office_value) {
+      let office_input = handlerInput.requestEnvelope.request.intent.slots.offices.value;
+
+      let speechText = 'I do not have that office in my records';
+
+      if (!office_input) {
          speechText = "which department location would you like to know?";
       } else {
 
-         for (var i = 0; i < office_names.length; i++) {
-            if (office_value === office_names[i]) {
-               speechText = 'The ' + office_value + ', is located at the, ' + office_location[i];
-            }
+         for (var i = 0; i < offices.length; i++) {
+            if (office_input.toLowerCase() == offices[i][0].toLowerCase()) {
+               speechText = "The " + offices[i][0] + " department is located at " + offices[i][1] + ". Woud you like to know anything else?";
+               }
          }
       }
 
