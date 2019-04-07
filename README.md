@@ -1,9 +1,11 @@
-# bmccHackathon2019
+# BMCC Hackathon2019
 <p>
     Project Name - BMCC Hub <br>
     Name - Jairo Molina, Eddie Ozuna, Damiano Canali, and Myat Thu Ko <br>
     Date - April 6, 2019 <br>
     BMCC Hackathon 2019
+    
+    ~Usage of this repository must be used only for reference purposes~
 </p>
 
 <p> 
